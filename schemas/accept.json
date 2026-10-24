@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haggleboard.com/schemas/v0/accept.json",
+  "title": "HBP accept",
+  "description": "Locks the referenced offer. When a seller-signed offer is accepted, the deal_token is produced.",
+  "type": "object",
+  "required": [
+    "hbp",
+    "type",
+    "thread_id",
+    "message_id",
+    "sent_at",
+    "from",
+    "nonce",
+    "in_reply_to",
+    "accepted_message_id",
+    "terms_hash",
+    "signature"
+  ],
+  "properties": {
+    "hbp": {
+      "const": "0.1"
+    },
+    "thread_id": {
+      "type": "string"
+    },
+    "message_id": {
+      "type": "string"
+    },
+    "in_reply_to": {
+      "type": "string"
+    },
+    "sent_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "from": {
+      "type": "object",
+      "required": [
+        "agent_id",
+        "role"
+      ],
+      "properties": {
+        "agent_id": {
+          "type": "string",
+          "description": "did:web or https domain of the agent"
+        },
+        "role": {
+          "enum": [
+            "buyer",
+            "seller"
+          ]
+        }
+      }
+    },
+    "nonce": {
+      "type": "string",
+      "minLength": 16,
+      "description": "random, single use per agent; replays are rejected"
+    },
+    "signature": {
+      "$ref": "#/$defs/signature"
+    },
+    "type": {
+      "const": "accept"
+    },
+    "accepted_message_id": {
+      "type": "string"
+    },
+    "terms_hash": {
+      "type": "string",
+      "description": "sha256 of canonical terms"
+    },
+    "deal_token": {
+      "type": "object",
+      "description": "Seller-signed record of agreed terms used at checkout handoff",
+      "required": [
+        "terms",
+        "terms_hash",
+        "seller_signature",
+        "valid_until",
+        "handoff"
+      ],
+      "properties": {
+        "terms": {
+          "$ref": "#/$defs/terms"
+        },
+        "terms_hash": {
+          "type": "string"
+        },
+        "seller_signature": {
+          "$ref": "#/$defs/signature"
+        },
+        "valid_until": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "handoff": {
+          "type": "object",
+          "required": [
+            "protocol",
+            "endpoint"
+          ],
+          "properties": {
+            "protocol": {
+              "enum": [
+                "ucp",
+                "acp",
+                "po",
+                "url"
+              ]
+            },
+            "endpoint": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "money": {
+      "type": "object",
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "properties": {
+        "amount": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]{1,2})?$"
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "signature": {
+      "type": "object",
+      "required": [
+        "alg",
+        "key_id",
+        "value"
+      ],
+      "properties": {
+        "alg": {
+          "const": "Ed25519"
+        },
+        "key_id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "terms": {
+      "type": "object",
+      "required": [
+        "price",
+        "category"
+      ],
+      "properties": {
+        "price": {
+          "$ref": "#/$defs/money"
+        },
+        "category": {
+          "enum": [
+            "hotel",
+            "electronics",
+            "b2b"
+          ]
+        },
+        "item": {
+          "type": "object"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

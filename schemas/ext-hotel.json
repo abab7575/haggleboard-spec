@@ -1,0 +1,42 @@
+{
+  "type": "object",
+  "required": [
+    "property_id",
+    "check_in",
+    "check_out",
+    "room_type",
+    "guests"
+  ],
+  "properties": {
+    "property_id": {
+      "type": "string"
+    },
+    "check_in": {
+      "type": "string",
+      "format": "date"
+    },
+    "check_out": {
+      "type": "string",
+      "format": "date"
+    },
+    "room_type": {
+      "type": "string"
+    },
+    "guests": {
+      "type": "integer"
+    },
+    "cancellation": {
+      "enum": [
+        "non_refundable",
+        "free_until_24h",
+        "free_until_72h"
+      ]
+    },
+    "breakfast": {
+      "type": "boolean"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haggleboard.com/schemas/v0/ext-hotel.json",
+  "title": "HBP extension: hotel"
+}

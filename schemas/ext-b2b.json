@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "required": [
+    "sku",
+    "quantity"
+  ],
+  "properties": {
+    "sku": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "integer"
+    },
+    "volume_tiers": {
+      "type": "array"
+    },
+    "payment_terms_days": {
+      "type": "integer"
+    },
+    "contract_months": {
+      "type": "integer"
+    },
+    "delivery_sla_days": {
+      "type": "integer"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haggleboard.com/schemas/v0/ext-b2b.json",
+  "title": "HBP extension: b2b"
+}

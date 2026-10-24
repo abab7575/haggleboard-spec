@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "required": [
+    "gtin",
+    "condition"
+  ],
+  "properties": {
+    "gtin": {
+      "type": "string"
+    },
+    "condition": {
+      "enum": [
+        "new",
+        "open_box",
+        "refurbished"
+      ]
+    },
+    "warranty_months": {
+      "type": "integer"
+    },
+    "shipping_days": {
+      "type": "integer"
+    },
+    "returns_days": {
+      "type": "integer"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haggleboard.com/schemas/v0/ext-electronics.json",
+  "title": "HBP extension: electronics"
+}

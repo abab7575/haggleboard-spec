@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haggleboard.com/schemas/v0/offer.json",
+  "title": "HBP offer",
+  "description": "Seller's firm terms, signed, binding until expires_at.",
+  "type": "object",
+  "required": [
+    "hbp",
+    "type",
+    "thread_id",
+    "message_id",
+    "sent_at",
+    "from",
+    "nonce",
+    "in_reply_to",
+    "terms",
+    "expires_at",
+    "round",
+    "signature"
+  ],
+  "properties": {
+    "hbp": {
+      "const": "0.1"
+    },
+    "thread_id": {
+      "type": "string"
+    },
+    "message_id": {
+      "type": "string"
+    },
+    "in_reply_to": {
+      "type": "string"
+    },
+    "sent_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "from": {
+      "type": "object",
+      "required": [
+        "agent_id",
+        "role"
+      ],
+      "properties": {
+        "agent_id": {
+          "type": "string",
+          "description": "did:web or https domain of the agent"
+        },
+        "role": {
+          "enum": [
+            "buyer",
+            "seller"
+          ]
+        }
+      }
+    },
+    "nonce": {
+      "type": "string",
+      "minLength": 16,
+      "description": "random, single use per agent; replays are rejected"
+    },
+    "signature": {
+      "$ref": "#/$defs/signature"
+    },
+    "type": {
+      "const": "offer"
+    },
+    "terms": {
+      "$ref": "#/$defs/terms"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "round": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "$defs": {
+    "money": {
+      "type": "object",
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "properties": {
+        "amount": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]{1,2})?$"
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "signature": {
+      "type": "object",
+      "required": [
+        "alg",
+        "key_id",
+        "value"
+      ],
+      "properties": {
+        "alg": {
+          "const": "Ed25519"
+        },
+        "key_id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "terms": {
+      "type": "object",
+      "required": [
+        "price",
+        "category"
+      ],
+      "properties": {
+        "price": {
+          "$ref": "#/$defs/money"
+        },
+        "category": {
+          "enum": [
+            "hotel",
+            "electronics",
+            "b2b"
+          ]
+        },
+        "item": {
+          "type": "object"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

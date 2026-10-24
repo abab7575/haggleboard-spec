@@ -1,0 +1,39 @@
+HaggleBoard Protocol v0 demo  (rule-based agents; Ed25519-signed offers; nonce + expiry enforced)
+
+Deal 1: hotel stay  | seller list EUR 240/night
+  12:00:00  shopper.example            REQUEST   needs: double, 2026-11-13→2026-11-15, 2 guests, free_until_24h
+  12:00:02  harbourhotel.example       OFFER    EUR 240.00 [signed]  (seller's limit stays private)
+  12:00:04  shopper.example            COUNTER  EUR 170.00 [signed]  
+  12:00:06  harbourhotel.example       COUNTER  EUR 218.00 [signed]  
+  12:00:08  shopper.example            COUNTER  EUR 187.00 [signed]  
+  12:00:10  harbourhotel.example       COUNTER  EUR 206.00 [signed]  
+  12:00:12  shopper.example            COUNTER  EUR 194.00 [signed]  
+  12:00:14  harbourhotel.example       COUNTER  EUR 201.00 [signed]  
+  12:00:16  shopper.example            COUNTER  EUR 196.00 [signed]  
+  12:00:18  harbourhotel.example       COUNTER  EUR 199.00 [signed]  
+  12:00:20  shopper.example            ACCEPT   [signed]  deal locked
+  -> HANDOFF to UCP checkout: https://harbourhotel.example/.well-known/ucp
+     deal_token terms_hash=96bc5f19242bea92…  valid_until=2026-10-24T12:15:20Z  (HBP never touches payment)
+
+Deal 2: laptop      | seller list EUR 1299
+  12:00:20  shopper.example            REQUEST   needs: GTIN 0000000000000 (new, 24m warranty)
+  12:00:22  laptops.example            OFFER    EUR 1299.00 [signed]  (seller's limit stays private)
+  12:00:24  shopper.example            COUNTER  EUR 1050.00 [signed]  
+  12:00:26  laptops.example            COUNTER  EUR 1236.00 [signed]  
+  12:00:28  shopper.example            COUNTER  EUR 1115.00 [signed]  
+  12:00:30  laptops.example            COUNTER  EUR 1195.00 [signed]  
+  12:00:32  shopper.example            COUNTER  EUR 1143.00 [signed]  
+  12:00:34  laptops.example            COUNTER  EUR 1177.00 [signed]  
+  12:00:36  shopper.example            COUNTER  EUR 1155.00 [signed]  
+  12:00:38  laptops.example            ACCEPT   [signed]  deal locked
+  -> HANDOFF to ACP checkout: https://laptops.example/checkout_sessions
+     deal_token terms_hash=f555e572011c94f2…  valid_until=2026-10-24T12:15:38Z  (HBP never touches payment)
+
+Safety checks
+  ok   replayed nonce rejected (replayed nonce)
+  ok   tampered price rejected (bad signature)
+  ok   expired offer rejected (message expired)
+
+Summary
+  hotel : EUR 199.00/night (list 240)
+  laptop: EUR 1155.00 (list 1299)
